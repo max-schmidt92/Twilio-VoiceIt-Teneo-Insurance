@@ -43,7 +43,6 @@ router.all(postPath.outbound_call, twilio_voice_instance.handleOutboundCalls());
 router.all(postPath.restart, function (req, res) {
     console.log(req.body);
     console.log(res.body);
-  process.exit(1);
 });
 
 // start the express application
