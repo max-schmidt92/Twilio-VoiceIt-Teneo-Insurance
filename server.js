@@ -6,7 +6,8 @@
  */
 const postPath = {
   default: '/',
-  outbound_call: "/outbound_call"
+  outbound_call: "/outbound_call",
+  restart: "/restart"
 };
 
 /**
@@ -37,6 +38,10 @@ const twilio_voice_instance = new twilio_voice();
 router.all(postPath.default, twilio_voice_instance.handleInboundCalls());
 
 router.all(postPath.outbound_call, twilio_voice_instance.handleOutboundCalls());
+
+router.all(postPath.restart, function (req, res, next) {
+  process.exit(1);
+});
 
 // start the express application
 http.createServer(app).listen(port, () => {

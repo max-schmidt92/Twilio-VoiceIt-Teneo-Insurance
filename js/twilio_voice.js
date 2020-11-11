@@ -140,7 +140,7 @@ class twilio_voice {
                             action: postPath.default,
                             actionOnEmptyResult: false,
                             language: twilioLanguage,
-                            timeout: 5,
+                            timeout: 20,
                             speechTimeout: "auto"
                         }).say({
                             voice: twilioVoiceName,
