@@ -212,6 +212,26 @@ class twilio_voice {
         }
     }
 
+    // handle incoming twilio message
+    handleCallChange() {
+
+        return async (req, res) => {
+
+            let body = '';
+
+            req.on('data', function (data) {
+                body += data;
+            });
+
+            req.on('end', async function () {
+                // parse the body
+                var post = qs.parse(body);
+
+                console.log(post)
+            });
+        }
+    }
+
     /***
      * SESSION HANDLER
      ***/
