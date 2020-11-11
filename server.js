@@ -18,7 +18,7 @@ const express = require('express');
 const twilio_voice = require(path.resolve('js', 'twilio_voice.js'));
 
 /**
- * Initialise variables using environment parameters, change
+ * Initialise variables using environment parameters, change2
  */
 const dotenv = require('dotenv');
 dotenv.config();
