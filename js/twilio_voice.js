@@ -140,7 +140,7 @@ class twilio_voice {
                             action: postPath.default,
                             actionOnEmptyResult: false,
                             language: twilioLanguage,
-                            timeout: 3,
+                            timeout: 5,
                             speechTimeout: "auto"
                         }).say({
                             voice: twilioVoiceName,
@@ -185,7 +185,7 @@ class twilio_voice {
 
         return async (req, res) => {
 
-            userInput = "Authentication";
+            userInput = "";
 
             const client = require('twilio')(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
 
