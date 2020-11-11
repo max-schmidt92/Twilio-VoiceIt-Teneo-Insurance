@@ -41,7 +41,7 @@ router.all(postPath.outbound_call, twilio_voice_instance.handleOutboundCalls());
 
 // Handle restart functionality
 router.all(postPath.restart, function (req, res) {
-    console.log(req.body.CallStatus);
+    console.log(req.body);
   process.exit(1);
 });
 
