@@ -230,7 +230,7 @@ class twilio_voice {
                 console.log(post);
 
                 if(post.CallStatus === "completed") {
-                    process.exit(1);
+                    shell.exec('npm restart');
                 }
             });
         }
