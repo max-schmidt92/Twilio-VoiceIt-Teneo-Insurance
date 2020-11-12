@@ -40,7 +40,7 @@ var confidence = "";
 var phone = "";
 
 // Initiates the biometric authentication solution
-var userInput = "";
+var userInput = START_MESSAGE;
 
 console.log("LANGUAGE_STT: " + LANGUAGE_STT);
 console.log("LANGUAGE_TTS: " + LANGUAGE_TTS);
@@ -230,8 +230,15 @@ class twilio_voice {
                 //console.log(post);
 
                 if(post.CallStatus === "completed") {
-                    var shell = require('shelljs');
-                    shell.exec('heroku ps:restart web -a standard-insurance-app');
+                    var token = '73bbe8ba-72fd-4f8b-913c-dee978c43519';
+                    var appName = 'standard-insurance-app';
+                    var dynoName = 'yourDynoHere';
+
+                    var Heroku = require('heroku-client');
+
+                    var heroku = new Heroku({ token: token });
+                    heroku .delete('/apps/' + appName + '/dynos/')
+                        .then( x => console.log(x) );
                 }
             });
         }

@@ -9,11 +9,11 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "forever": "^3.0.2",
+    "heroku-client": "^3.1.0",
     "http": "0.0.0",
     "path": "^0.12.7",
     "querystring": "^0.2.0",
     "redis": "^3.0.2",
-    "shelljs": "^0.8.4",
     "twilio": "^3.49.1"
   },
   "devDependencies": {},
