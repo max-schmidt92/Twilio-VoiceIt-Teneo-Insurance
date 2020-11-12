@@ -40,7 +40,7 @@ var confidence = "";
 var phone = "";
 
 // Initiates the biometric authentication solution
-var userInput = START_MESSAGE;
+var userInput = "";
 
 console.log("LANGUAGE_STT: " + LANGUAGE_STT);
 console.log("LANGUAGE_TTS: " + LANGUAGE_TTS);
@@ -107,7 +107,7 @@ class twilio_voice {
 
                 var contentToTeneo = {'text': userInput, "parameters": JSON.stringify(parameters), "channel":"ivr"};
 
-                console.log("Content to Teneo: " + JSON.stringify(contentToTeneo).toString());
+                console.log("Content to Teneo: " + JSON.stringify(contentToTAuthenticationeneo).toString());
 
                 // Add "_phone" to as key to session to make each session, regardless when using call/sms
                 teneoResponse = await teneoApi.sendInput(teneoSessionId, contentToTeneo);
@@ -229,7 +229,7 @@ class twilio_voice {
 
                 console.log(post);
 
-                if(post.CallStatus === "Completed") {
+                if(post.CallStatus === "completed") {
                     process.exit(1);
                 }
             });
