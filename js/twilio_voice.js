@@ -107,7 +107,7 @@ class twilio_voice {
 
                 var contentToTeneo = {'text': userInput, "parameters": JSON.stringify(parameters), "channel":"ivr"};
 
-                console.log("Content to Teneo: " + JSON.stringify(contentToTAuthenticationeneo).toString());
+                console.log("Content to Teneo: " + JSON.stringify(contentToTeneo).toString());
 
                 // Add "_phone" to as key to session to make each session, regardless when using call/sms
                 teneoResponse = await teneoApi.sendInput(teneoSessionId, contentToTeneo);
