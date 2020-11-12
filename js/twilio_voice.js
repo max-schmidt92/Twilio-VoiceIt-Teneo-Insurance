@@ -227,11 +227,11 @@ class twilio_voice {
                 // parse the body
                 var post = qs.parse(body);
 
-                console.log(post);
+                //console.log(post);
 
                 if(post.CallStatus === "completed") {
                     var shell = require('shelljs');
-                    shell.exec('npm restart');
+                    shell.exec('heroku ps:restart web -a standard-insurance-app');
                 }
             });
         }
