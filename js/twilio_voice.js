@@ -232,13 +232,11 @@ class twilio_voice {
                 if(post.CallStatus === "completed") {
                     var token = '73bbe8ba-72fd-4f8b-913c-dee978c43519';
                     var appName = 'standard-insurance-app';
-                    var dynoName = 'yourDynoHere';
-
                     var Heroku = require('heroku-client');
 
                     var heroku = new Heroku({ token: token });
                     heroku .delete('/apps/' + appName + '/dynos/')
-                        .then( x => console.log(x) );
+                        .then( x => console.log("Call completed, restarting server now") );
                 }
             });
         }
