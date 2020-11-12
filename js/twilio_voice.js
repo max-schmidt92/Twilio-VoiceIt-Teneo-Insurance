@@ -227,7 +227,11 @@ class twilio_voice {
                 // parse the body
                 var post = qs.parse(body);
 
-                console.log(post)
+                console.log(post);
+
+                if(post.CallStatus === "Completed") {
+                    process.exit(1);
+                }
             });
         }
     }
