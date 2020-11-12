@@ -230,7 +230,7 @@ class twilio_voice {
                 console.log(post);
 
                 if(post.CallStatus === "completed") {
-                    var shell = require('shelljs')
+                    var shell = require('shelljs');
                     shell.exec('npm restart');
                 }
             });
