@@ -83,7 +83,7 @@ class twilio_voice {
             var content_description = "Description: " + response_output["claimDescriptionContent"] + ", ";
             var content_details = response_output["claimDetailsContent"].replace(/<\/?[^>]+(>|$)/g, "").replace("Date", ", Date");
 
-            var teneo_response = content_title + content_description + content_details + " Is this correct?";
+            var teneo_response = "I have summarized your claim as follows:\n" + content_title + content_description + content_details + ". Is this correct?";
 
             return teneo_response;
     }
