@@ -122,6 +122,10 @@ class twilio_voice {
                     if(Object.keys(teneoResponse.output.parameters).includes("twilioLanguage")) {
                         twilioLanguage = teneoResponse.output.parameters["twilioLanguage"];
                     }
+                    // Swap SMS text with default output text to be read out
+                    if(Object.keys(teneoResponse.output.parameters).includes("sms")) {
+                        teneoResponse.output.text = teneoResponse.output.parameters["sms"];
+                    }
                 }
 
                 console.log("Output response: " + teneoResponse.output.text);
