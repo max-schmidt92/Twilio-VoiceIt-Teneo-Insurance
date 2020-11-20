@@ -53,7 +53,7 @@ class twilio_voice {
         var original_list = [":", ",","[","]"];
         var replaced_list = ['":"', '","','{"','"}'];
 
-        var json_string_list = json_string.split(",");
+        var json_string_list = givenMapObject.split(",");
 
         original_list.forEach((original, index) => {
             var original_value = original;
