@@ -50,6 +50,8 @@ class twilio_voice {
 
     static convertGroovyMapToTeneoOutput(givenMapObject) {
 
+            givenMapObject = givenMapObject.split("||")[0];
+
             var original_list = [":", ",","[","]"];
             var replaced_list = ['":"', '","','{"','"}'];
 
@@ -81,7 +83,7 @@ class twilio_voice {
             var content_description = "Description: " + response_output["claimDescriptionContent"] + ", ";
             var content_details = response_output["claimDetailsContent"].replace(/<\/?[^>]+(>|$)/g, "").replace("Date", ", Date");
 
-            var teneo_response = content_title + content_description + content_details;
+            var teneo_response = content_title + content_description + content_details + " Is this correct?";
 
             return teneo_response;
     }
