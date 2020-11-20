@@ -48,6 +48,44 @@ console.log("TENEO_ENGINE_URL: " + TENEO_ENGINE_URL);
 
 class twilio_voice {
 
+    convertGroovyMapToTeneoOutput(givenMapObject) {
+
+        var original_list = [":", ",","[","]"];
+        var replaced_list = ['":"', '","','{"','"}'];
+
+        var json_string_list = json_string.split(",");
+
+        original_list.forEach((original, index) => {
+            var original_value = original;
+            var replaced_value = replaced_list[index];
+            for(var i = 0; i < json_string_list.length; i++) {
+                json_string_list[i] = json_string_list[i].replace(original_value, replaced_value);
+            }
+        });
+
+        var json_string_output = "";
+
+        for(var i = 0; i < json_string_list.length; i++) {
+            if(json_string_list[i].charAt(0) === " ") {
+                json_string_list[i] = json_string_list[i].substring(1);
+            }
+            json_string_output += json_string_list[i].replace("<[^>]*>", "");
+            if(i < (json_string_list.length-1)) {
+                json_string_output += '","'
+            }
+        }
+
+        var response_output = JSON.parse(json_string_output);
+
+        var content_title = "Title: " + response_output["claimTitle"] + ", ";
+        var content_description = "Description: " + response_output["claimDescriptionContent"] + ", ";
+        var content_details = response_output["claimDetailsContent"].replace(/<\/?[^>]+(>|$)/g, "").replace("Date", ", Date");
+
+        var teneo_response = content_title + content_description + content_details;
+
+        return teneo_response;
+    }
+
     // handle incoming twilio message
     handleInboundCalls() {
 
@@ -124,7 +162,7 @@ class twilio_voice {
                     }
                     // Swap SMS text with default output text to be read out
                     if(Object.keys(teneoResponse.output.parameters).includes("sms")) {
-                        teneoResponse.output.text = teneoResponse.output.parameters["sms"];
+                        teneoResponse.output.text = convertGroovyMapToTeneoOutput(teneoResponse.output.parameters["sms"].toString());
                     }
                 }
 
