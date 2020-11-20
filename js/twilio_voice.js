@@ -162,7 +162,7 @@ class twilio_voice {
                     }
                     // Swap SMS text with default output text to be read out
                     if(Object.keys(teneoResponse.output.parameters).includes("sms")) {
-                        teneoResponse.output.text = convertGroovyMapToTeneoOutput(teneoResponse.output.parameters["sms"]);
+                        teneoResponse.output.text = twilio_voice.convertGroovyMapToTeneoOutput(teneoResponse.output.parameters["sms"]);
                     }
                 }
 
