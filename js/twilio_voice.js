@@ -48,42 +48,42 @@ console.log("TENEO_ENGINE_URL: " + TENEO_ENGINE_URL);
 
 class twilio_voice {
 
-    convertGroovyMapToTeneoOutput(givenMapObject) {
+    static convertGroovyMapToTeneoOutput(givenMapObject) {
 
-        var original_list = [":", ",","[","]"];
-        var replaced_list = ['":"', '","','{"','"}'];
+            var original_list = [":", ",","[","]"];
+            var replaced_list = ['":"', '","','{"','"}'];
 
-        var json_string_list = givenMapObject.split(",");
+            var json_string_list = givenMapObject.split(",");
 
-        original_list.forEach((original, index) => {
-            var original_value = original;
-            var replaced_value = replaced_list[index];
+            original_list.forEach((original, index) => {
+                var original_value = original;
+                var replaced_value = replaced_list[index];
+                for(var i = 0; i < json_string_list.length; i++) {
+                    json_string_list[i] = json_string_list[i].replace(original_value, replaced_value);
+                }
+            });
+
+            var json_string_output = "";
+
             for(var i = 0; i < json_string_list.length; i++) {
-                json_string_list[i] = json_string_list[i].replace(original_value, replaced_value);
+                if(json_string_list[i].charAt(0) === " ") {
+                    json_string_list[i] = json_string_list[i].substring(1);
+                }
+                json_string_output += json_string_list[i].replace("<[^>]*>", "");
+                if(i < (json_string_list.length-1)) {
+                    json_string_output += '","'
+                }
             }
-        });
 
-        var json_string_output = "";
+            var response_output = JSON.parse(json_string_output);
 
-        for(var i = 0; i < json_string_list.length; i++) {
-            if(json_string_list[i].charAt(0) === " ") {
-                json_string_list[i] = json_string_list[i].substring(1);
-            }
-            json_string_output += json_string_list[i].replace("<[^>]*>", "");
-            if(i < (json_string_list.length-1)) {
-                json_string_output += '","'
-            }
-        }
+            var content_title = "Title: " + response_output["claimTitle"] + ", ";
+            var content_description = "Description: " + response_output["claimDescriptionContent"] + ", ";
+            var content_details = response_output["claimDetailsContent"].replace(/<\/?[^>]+(>|$)/g, "").replace("Date", ", Date");
 
-        var response_output = JSON.parse(json_string_output);
+            var teneo_response = content_title + content_description + content_details;
 
-        var content_title = "Title: " + response_output["claimTitle"] + ", ";
-        var content_description = "Description: " + response_output["claimDescriptionContent"] + ", ";
-        var content_details = response_output["claimDetailsContent"].replace(/<\/?[^>]+(>|$)/g, "").replace("Date", ", Date");
-
-        var teneo_response = content_title + content_description + content_details;
-
-        return teneo_response;
+            return teneo_response;
     }
 
     // handle incoming twilio message
