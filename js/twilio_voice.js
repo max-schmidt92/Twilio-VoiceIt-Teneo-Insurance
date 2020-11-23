@@ -99,7 +99,7 @@ class twilio_voice {
                 var response_output = twilio_voice.generateJSONObjectFromGroovyMap(givenMapObject);
 
                 if(response_output.includes('}","{')) {
-                    response_output = "[" + json_string_output.replace('}","{','},{') + "]";
+                    response_output = "[" + response_output.replace('}","{','},{') + "]";
                 }
 
                 response_output = JSON.parse(response_output);
