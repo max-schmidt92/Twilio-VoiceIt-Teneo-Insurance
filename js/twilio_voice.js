@@ -75,9 +75,7 @@ class twilio_voice {
             }
         }
 
-        console.log("RESULT: " + json_string_output);
-
-        return JSON.parse(json_string_output);
+        return json_string_output;
     }
 
     static convertGroovyMapToTeneoOutput(givenMapObject) {
@@ -86,7 +84,7 @@ class twilio_voice {
             if(givenMapObject.includes("||")) {
                 givenMapObject = givenMapObject.split("||")[0];
 
-                var response_output = twilio_voice.generateJSONObjectFromGroovyMap(givenMapObject);
+                var response_output = JSON.parse(twilio_voice.generateJSONObjectFromGroovyMap(givenMapObject));
 
                 var content_title = "Title: " + response_output["claimTitle"] + ", ";
                 var content_description = "Description: " + response_output["claimDescriptionContent"] + ", ";
@@ -96,16 +94,34 @@ class twilio_voice {
             }
             else if(givenMapObject.includes("[[")) {
                 // [[date:2020-11-12, desc:My car broke down, amount:200]]
-                console.log("Before: " + givenMapObject.toString());
                 givenMapObject = givenMapObject.replace("[[","[").replace("]]","]");
-                console.log("After: " + givenMapObject.toString());
+
                 var response_output = twilio_voice.generateJSONObjectFromGroovyMap(givenMapObject);
 
-                var content_title = "Date: " + response_output["date"] + ", ";
-                var content_description = "Description: " + response_output["desc"] + ", ";
-                var content_details = "Claim amount" + response_output["amount"];
+                if(response_output.includes('}","{')) {
+                    response_output = "[" + json_string_output.replace('}","{','},{') + "]";
+                }
 
-                var teneo_response = "These are the details of your claim: " + content_title + content_description + content_details;
+                response_output = JSON.parse(response_output);
+
+                var entries = "";
+
+                if(Array.isArray(response_output)) {
+                    entries = "These are the details of your claims: \n";
+                    for(var i = 0; i < response_output.length; i++) {
+                        var content_title = " Date: " + response_output[i]["date"] + ", ";
+                        var content_description = "Description: " + response_output[i]["desc"] + ", ";
+                        var content_details = "Claim amount: " + response_output[i]["amount"];
+                        entries += " Claim #" + String(i+1) + content_title + content_description + content_details + " \n";
+                    }
+                } else {
+                    var content_title = " Date: " + response_output["date"] + ", ";
+                    var content_description = "Description: " + response_output["desc"] + ", ";
+                    var content_details = "Claim amount: " + response_output["amount"];
+                    entries = "These are the details for your claim: " + content_title + content_description + content_details;
+                }
+
+                teneo_response = entries;
             }
 
             return teneo_response;
