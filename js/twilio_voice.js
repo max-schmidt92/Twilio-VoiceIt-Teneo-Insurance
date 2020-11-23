@@ -46,8 +46,6 @@ console.log("LANGUAGE_STT: " + LANGUAGE_STT);
 console.log("LANGUAGE_TTS: " + LANGUAGE_TTS);
 console.log("TENEO_ENGINE_URL: " + TENEO_ENGINE_URL);
 
-const sessionHandler = this.SessionHandler();
-
 class twilio_voice {
 
     static generateJSONObjectFromGroovyMap(givenMapObject) {
