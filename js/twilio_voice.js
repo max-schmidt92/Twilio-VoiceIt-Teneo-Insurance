@@ -131,7 +131,7 @@ class twilio_voice {
     handleInboundCalls() {
 
         // initialise session handler, to store mapping between twillio CallSid and engine session id
-
+        const sessionHandler = this.SessionHandler();
 
         return async (req, res) => {
 
