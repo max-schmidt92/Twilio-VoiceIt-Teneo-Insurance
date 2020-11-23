@@ -84,7 +84,7 @@ class twilio_voice {
             if(givenMapObject.includes("||")) {
                 givenMapObject = givenMapObject.split("||")[0];
 
-                var response_output = generateJSONObjectFromGroovyMap(givenMapObject);
+                var response_output = twilio_voice.generateJSONObjectFromGroovyMap(givenMapObject);
 
                 var content_title = "Title: " + response_output["claimTitle"] + ", ";
                 var content_description = "Description: " + response_output["claimDescriptionContent"] + ", ";
@@ -96,7 +96,7 @@ class twilio_voice {
                 // [[date:2020-11-12, desc:My car broke down, amount:200]]
                 givenMapObject = givenMapObject.replace("[[","[").replace("]]","]");
 
-                var response_output = generateJSONObjectFromGroovyMap(givenMapObject);
+                var response_output = twilio_voice.generateJSONObjectFromGroovyMap(givenMapObject);
 
                 var content_title = "Date: " + response_output["date"] + ", ";
                 var content_description = "Description: " + response_output["desc"] + ", ";
