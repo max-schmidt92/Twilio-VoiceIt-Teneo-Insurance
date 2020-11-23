@@ -298,9 +298,13 @@ class twilio_voice {
 
             if(req.url.includes("phone")) {
                 phone = parameters_map["phone"];
-            } else if (req.url.includes("twilioLanguage")) {
+            }
+
+            if (req.url.includes("twilioLanguage")) {
                 twilioLanguage = parameters_map["twilioLanguage"];
-            } else if (req.url.includes("sessionid")) {
+            }
+
+            if (req.url.includes("sessionid")) {
                 teneoSessionId = parameters_map["sessionid"];
             }
 
