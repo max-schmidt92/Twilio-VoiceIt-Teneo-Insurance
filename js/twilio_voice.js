@@ -96,8 +96,9 @@ class twilio_voice {
             }
             else if(givenMapObject.includes("[[")) {
                 // [[date:2020-11-12, desc:My car broke down, amount:200]]
+                console.log("Before: " + givenMapObject.toString());
                 givenMapObject = givenMapObject.replace("[[","[").replace("]]","]");
-
+                console.log("After: " + givenMapObject.toString());
                 var response_output = twilio_voice.generateJSONObjectFromGroovyMap(givenMapObject);
 
                 var content_title = "Date: " + response_output["date"] + ", ";
