@@ -193,12 +193,7 @@ class twilio_voice {
                 // Add "_phone" to as key to session to make each session, regardless when using call/sms
                 teneoResponse = await teneoApi.sendInput(teneoSessionId, contentToTeneo);
 
-                if(sessionId === "") {
-                    sessionHandler.setSession(callSid, teneoResponse.sessionId);
-                } else if (sessionId !== "") {
-                    sessionHandler.setSession(callSid, sessionId);
-                }
-
+                sessionHandler.setSession(callSid, teneoResponse.sessionId);
 
                 // Detect if Teneo solution have provided a Twilio action as output parameter
                 if(Object.keys(teneoResponse.output.parameters).length !== 0) {
