@@ -46,6 +46,8 @@ console.log("LANGUAGE_STT: " + LANGUAGE_STT);
 console.log("LANGUAGE_TTS: " + LANGUAGE_TTS);
 console.log("TENEO_ENGINE_URL: " + TENEO_ENGINE_URL);
 
+const sessionHandler = this.SessionHandler();
+
 class twilio_voice {
 
     static generateJSONObjectFromGroovyMap(givenMapObject) {
@@ -111,13 +113,13 @@ class twilio_voice {
                     for(var i = 0; i < response_output.length; i++) {
                         var content_title = " Date: " + response_output[i]["date"] + ", ";
                         var content_description = "Description: " + response_output[i]["desc"] + ", ";
-                        var content_details = "Claim amount: " + response_output[i]["amount"];
+                        var content_details = "Claim amount: " + response_output[i]["amount"] + " EUR";
                         entries += " Claim #" + String(i+1) + content_title + content_description + content_details + " \n";
                     }
                 } else {
                     var content_title = " Date: " + response_output["date"] + ", ";
                     var content_description = "Description: " + response_output["desc"] + ", ";
-                    var content_details = "Claim amount: " + response_output["amount"];
+                    var content_details = "Claim amount: " + response_output["amount"] + " EUR";
                     entries = "These are the details for your claim: " + content_title + content_description + content_details;
                 }
 
@@ -131,7 +133,7 @@ class twilio_voice {
     handleInboundCalls() {
 
         // initialise session handler, to store mapping between twillio CallSid and engine session id
-        const sessionHandler = this.SessionHandler();
+
 
         return async (req, res) => {
 
@@ -272,11 +274,31 @@ class twilio_voice {
 
             const client = require('twilio')(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
 
-            phone = "+" + req.url.replace("/outbound_call", "").replace(/[^0-9]/g, '');
+            /*phone = "+" + req.url.replace("/outbound_call", "").replace(/[^0-9]/g, '');
 
             if(req.url.includes("twilioLanguage")) {
                 twilioLanguage = req.url.split("&twilioLanguage=")[1]
+            }*/
+
+            console.log(req.url);
+
+            var parameters = req.url.split("?")[1].split("&");
+
+            var parameters_map = {};
+
+            for(var i = 0; i < parameters.length; i++) {
+                var entry = parameters[i].split("=");
+                parameters_map[entry[0]] = entry[1];
             }
+
+            if(req.url.includes("phone")) {
+                phone = parameters_map["phone"];
+            } else if (req.url.includes("twilioLanguage")) {
+                twilioLanguage = parameters_map["twilioLanguage"];
+            } else if (req.url.includes("sessionid")) {
+                sessionHandler.setSession(phone, parameters_map["sessionid"])
+            }
+
 
             const url = "http://" + req.headers["host"] + "/";
 
