@@ -75,6 +75,8 @@ class twilio_voice {
             }
         }
 
+        console.log("RESULT: " + json_string_output);
+
         return JSON.parse(json_string_output);
     }
 
