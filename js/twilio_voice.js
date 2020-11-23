@@ -48,42 +48,62 @@ console.log("TENEO_ENGINE_URL: " + TENEO_ENGINE_URL);
 
 class twilio_voice {
 
+    static generateJSONObjectFromGroovyMap(givenMapObject) {
+
+        var original_list = [":", ",","[","]"];
+        var replaced_list = ['":"', '","','{"','"}'];
+
+        var json_string_list = givenMapObject.split(",");
+
+        original_list.forEach((original, index) => {
+            var original_value = original;
+            var replaced_value = replaced_list[index];
+            for(var i = 0; i < json_string_list.length; i++) {
+                json_string_list[i] = json_string_list[i].replace(original_value, replaced_value);
+            }
+        });
+
+        var json_string_output = "";
+
+        for(var i = 0; i < json_string_list.length; i++) {
+            if(json_string_list[i].charAt(0) === " ") {
+                json_string_list[i] = json_string_list[i].substring(1);
+            }
+            json_string_output += json_string_list[i].replace("<[^>]*>", "");
+            if(i < (json_string_list.length-1)) {
+                json_string_output += '","'
+            }
+        }
+
+        return JSON.parse(json_string_output);
+    }
+
     static convertGroovyMapToTeneoOutput(givenMapObject) {
 
-            givenMapObject = givenMapObject.split("||")[0];
+            // Filing a claim
+            if(givenMapObject.includes("||")) {
+                givenMapObject = givenMapObject.split("||")[0];
 
-            var original_list = [":", ",","[","]"];
-            var replaced_list = ['":"', '","','{"','"}'];
+                var response_output = generateJSONObjectFromGroovyMap(givenMapObject);
 
-            var json_string_list = givenMapObject.split(",");
+                var content_title = "Title: " + response_output["claimTitle"] + ", ";
+                var content_description = "Description: " + response_output["claimDescriptionContent"] + ", ";
+                var content_details = response_output["claimDetailsContent"].replace(/<\/?[^>]+(>|$)/g, "").replace("Date", ", Date");
 
-            original_list.forEach((original, index) => {
-                var original_value = original;
-                var replaced_value = replaced_list[index];
-                for(var i = 0; i < json_string_list.length; i++) {
-                    json_string_list[i] = json_string_list[i].replace(original_value, replaced_value);
-                }
-            });
-
-            var json_string_output = "";
-
-            for(var i = 0; i < json_string_list.length; i++) {
-                if(json_string_list[i].charAt(0) === " ") {
-                    json_string_list[i] = json_string_list[i].substring(1);
-                }
-                json_string_output += json_string_list[i].replace("<[^>]*>", "");
-                if(i < (json_string_list.length-1)) {
-                    json_string_output += '","'
-                }
+                var teneo_response = "I have summarized your claim as follows:\n" + content_title + content_description + content_details + ". Is this correct?";
             }
+            else if(givenMapObject.includes("[[")) {
+                // [[date:2020-11-12, desc:My car broke down, amount:200]]
+                givenMapObject = givenMapObject.replace("[[","[").replace("]]","]");
 
-            var response_output = JSON.parse(json_string_output);
+                var response_output = generateJSONObjectFromGroovyMap(givenMapObject);
 
-            var content_title = "Title: " + response_output["claimTitle"] + ", ";
-            var content_description = "Description: " + response_output["claimDescriptionContent"] + ", ";
-            var content_details = response_output["claimDetailsContent"].replace(/<\/?[^>]+(>|$)/g, "").replace("Date", ", Date");
+                var content_title = "Date: " + response_output["date"] + ", ";
+                var content_description = "Description: " + response_output["desc"] + ", ";
+                var content_details = "Claim amount" + response_output["amount"];
 
-            var teneo_response = "I have summarized your claim as follows:\n" + content_title + content_description + content_details + ". Is this correct?";
+                var teneo_response = "These are the details of your claim: " + content_title + content_description + content_details;
+            }
 
             return teneo_response;
     }
